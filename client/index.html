@@ -6,11 +6,12 @@
   var require = {
     baseUrl: "/js",
     paths: {
-      "jquery": "lib/jquery-3.1.1.slim.min"
+      "jquery": "lib/jquery-3.1.1.slim.min",
+      "config": "hexxdata"
     },
     map: {
       "*": { "jquery": "jquery-private" }, 
-      "jquery-private": { "jquery": "jquery" } 
+      "jquery-private": { "jquery": "jquery" }
     },
     deps: [ "App" ], 
     callback: function(App) { new App().open(); } 
@@ -24,9 +25,9 @@
   <div id="subheading" class="subheading">
     Here it is.
   </div>
-	<div class="canvasAndToolbar">
-		<div id="canvas" class="canvas"></div>
-		<div id="toolbar" class="toolbar"></div>
+	<div>
+		<div id="chart1-canvas" class="canvas"></div>
+		<div id="chart1-toolbar" class="toolbar"></div>
 	</div>
 </body>
 </html>
