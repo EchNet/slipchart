@@ -1,0 +1,32 @@
+<html>
+<head>
+<title>Slipchart</title>
+<link rel="stylesheet" type="text/css" href="css/hexx.css"/>
+<script>
+  var require = {
+    baseUrl: "/js",
+    paths: {
+      "jquery": "lib/jquery-3.1.1.slim.min"
+    },
+    map: {
+      "*": { "jquery": "jquery-private" }, 
+      "jquery-private": { "jquery": "jquery" } 
+    },
+    deps: [ "App" ], 
+    callback: function(App) { new App().open(); } 
+  }
+</script>
+<script src="js/lib/require.js"></script>
+</head>
+<body>
+<div id="content">
+  <div id="heading" class="heading">Slipchart</div>
+  <div id="subheading" class="subheading">
+    Here it is.
+  </div>
+	<div class="canvasAndToolbar">
+		<div id="canvas" class="canvas"></div>
+		<div id="toolbar" class="toolbar"></div>
+	</div>
+</body>
+</html>
