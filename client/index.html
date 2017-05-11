@@ -6,15 +6,14 @@
   var require = {
     baseUrl: "/js",
     paths: {
-      "jquery": "lib/jquery-3.1.1.slim.min",
-      "config": "hexxdata"
+      "jquery": "lib/jquery-3.1.1.slim.min"
     },
     map: {
       "*": { "jquery": "jquery-private" }, 
       "jquery-private": { "jquery": "jquery" }
     },
     deps: [ "App" ], 
-    callback: function(App) { new App().open(); } 
+    callback: function(App) { App() } 
   }
 </script>
 <script src="js/lib/require.js"></script>
@@ -23,11 +22,42 @@
 <div id="content">
   <div id="heading" class="heading">Slipchart</div>
   <div id="subheading" class="subheading">
-    Here it is.
+    Spring 2017 Hackathon hack by James Echmalian
   </div>
+  <div id="subheading" class="subheading">
+    It's not on the ballot but you are welcome to write it in!
+  </div>
+  <div class="subject">What is it?</div>
+  <div class="text">
+    A demonstration of how we can breathe more life into our charts.  Slipchart adds a dimension to conventional 
+    2D charts and lets the user slide along the third dimension without pausing to reload the page and generate
+    a new chart.
+  </div>
+  <div class="text note">
+    The user can select a particular time value by operating the slide-bar.  Try it.
+  </div>
+  <div class="subject">Chart #1</div>
 	<div>
 		<div id="chart1-canvas" class="canvas"></div>
 		<div id="chart1-toolbar" class="toolbar"></div>
 	</div>
+  <div class="text note">
+    Press the "Once Through" button to animate the chart through the full range.
+  </div>
+  <div class="text note">
+    Press the "Play" button to launch the chart into continuous animation mode.
+  </div>
+  <div class="subject">Chart #2</div>
+  <div class="text">Just to prove that the above chart is not completely canned, here is another one based on the same component, but with different configuration and data.</div>
+	<div>
+		<div id="chart2-canvas" class="canvas"></div>
+		<div id="chart2-toolbar" class="toolbar"></div>
+	</div>
+  <div class="text">
+    At the techie level, this is a straight-up HTML5 browser component - just Canvas, no Flash, no charting package, not even jQuery.
+  </div>
+  <div class="text">
+    If I had more time (or were a better hacker)...  I'd implement export of animation to video for inclusion in presentations. 
+  </div>
 </body>
 </html>

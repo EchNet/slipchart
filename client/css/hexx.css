@@ -1,7 +1,7 @@
 body {
 	font-family: Tahoma, Arial;
 	position: relative;
-	background-color: #fffbff;
+	background-color: #fbfbff;
 }
 #content {
 	margin: auto;
@@ -10,22 +10,29 @@ body {
 #content div {
   width: 100%;
   text-align: center;
+	padding-bottom: 10px;
 }
 .heading {
-	font-size: 20px;
-	padding-bottom: 5px;
+  font-weight: bold;
+	font-size: 48px;
 }
 .subheading {
-	font-size: 12px;
-	padding-bottom: 5px;
+	font-size: 18px;
+  font-style: italic;
+}
+.subject {
+  margin-top: 30px;
+  font-weight: bold;
+	font-size: 24px;
+}
+#content div.text {
+	font-size: 20px;
+  text-align: left;
 }
 div.canvas {
   height: 500px;
 	border: solid 1px #ddd;
 	background-color: white;
-}
-div.toolbar {
-	padding: 5px;
 }
 canvas.drawing {
   width: 100%;
@@ -33,4 +40,11 @@ canvas.drawing {
 }
 input[type="range"] {
   width: 100%;
+}
+button {
+  font-size: 24px;
+  margin: 0px 10px;
+}
+.note {
+  color: #ff5577;
 }

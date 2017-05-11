@@ -1,11 +1,8 @@
-define([ "config", "BarChart" ],
-  function(config, BarChart) {
-
-	function open() {
-    BarChart(config);
-	}
+define([ "chart1", "chart2", "BarChart" ],
+  function(chart1, chart2, BarChart) {
 
 	return function() {
-		this.open = open;
+    BarChart(chart1);
+    BarChart(chart2);
 	};
 });

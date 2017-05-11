@@ -19,10 +19,9 @@ define([ "base" ], function() {
 
 	return function(config) {
 
-		function renderCanvasContents(z) {
+		function renderChart(z) {
       var strokeStyle = "rgba(0,0,0,1)";
 			withContext(config.prefix + "-drawing-canvas", function(context, canvas) {
-				clearCanvas(canvas);
         context.save();
         context.strokeStyle = strokeStyle;
         context.lineWidth = 1;
@@ -69,7 +68,8 @@ define([ "base" ], function() {
           if (metric.label) {
             context.save();
             context.font = "24px Courier";
-            context.fillText(metric.label, metric.x - 40, canvas.height - config.bottom + 25);
+            context.textAlign = "center";
+            context.fillText(metric.label, metric.x, canvas.height - config.bottom + 25);
             context.restore();
           }
         });
@@ -85,27 +85,23 @@ define([ "base" ], function() {
       return drawingCanvas;
     }
 
-    function createDateDisplay() {
-      var dateDisplay = document.createElement("div");
-      dateDisplay.id = config.prefix + "-date-display";
-      return dateDisplay;
-    }
-
     function renderDate(z) {
-      var date = new Date();
-      date.setDate(date.getDate() - (100 - z));
-      var str = date.toString().split(/ /).slice(0, 4).join(' ');
-      withElement(config.prefix + "-date-display", function(dateDisplay) {
-        while (dateDisplay.firstChild) {
-          dateDisplay.removeChild(dateDisplay.firstChild);
-        }
-        dateDisplay.appendChild(document.createTextNode(str));
+      if (config.zToString) {
+        z = config.zToString(z);
+      }
+			withContext(config.prefix + "-drawing-canvas", function(context, canvas) {
+        context.save();
+        context.font = "48px Arial";
+        context.textAlign = "center";
+        context.fillText(z, canvas.width / 2, config.top / 2);
+        context.restore();
       });
     }
 
     function render(z) {
+      clearCanvas(config.prefix + "-drawing-canvas");
+      renderChart(z);
       renderDate(z);
-      renderCanvasContents(z);
     }
 
     function createSlider() {
@@ -122,39 +118,94 @@ define([ "base" ], function() {
       return slider;
     }
 
-    function animate(done) {
+    function animate(once, done) {
+      var interval;
+      var pause = 0;
+
+      function stop() {
+        clearInterval(interval);
+        done();
+      }
+
       withElement(config.prefix + "-slider", function(slider) {
-        slider.value = 0;
-        var interval = setInterval(function() {
-          var newValue = Math.min(100, parseInt(slider.value) + 1);
+        if (once || parseInt(slider.value) == 100) {
+          slider.value = 0;
+          render(0);
+        }
+      });
+
+      interval = setInterval(function() {
+        withElement(config.prefix + "-slider", function(slider) {
+          var newValue = 0;
+          if (pause > 0) {
+            if (--pause > 0) return;
+          }
+          else {
+            newValue = Math.min(100, parseInt(slider.value) + 1);
+          }
           slider.value = newValue;
           render(newValue);
-          if (newValue >= 100) {
-            clearInterval(interval);
-            done();
+          if (newValue == 100) {
+            if (once) {
+              stop();
+            }
+            else {
+              pause = 15;
+            }
           }
-        }, 50);
-      });
+        });
+      }, 50);
+
+      return { stop: stop }
     }
 
     function createButtonBar() {
       var div = document.createElement("div");
+
+      var onceButton = document.createElement("button");
+      onceButton.appendChild(document.createTextNode("Once Through"));
       var playButton = document.createElement("button");
       playButton.appendChild(document.createTextNode("Play"));
-      playButton.addEventListener("click", function() {
-        playButton.disabled = true;
-        animate(function() {
-          playButton.disabled = false;
+      var stopButton = document.createElement("button");
+      stopButton.appendChild(document.createTextNode("Stop"));
+      stopButton.disabled = true;
+
+      function enablePlay(enable) {
+        onceButton.disabled = !enable;
+        playButton.disabled = !enable;
+        stopButton.disabled = enable;
+      }
+
+      function play(once) {
+        enablePlay(false);
+        animation = animate(once, function() {
+          enablePlay(true);
         });
+      }
+
+      var animation;
+
+      onceButton.addEventListener("click", function() {
+        play(true);
       });
+
+      playButton.addEventListener("click", function() {
+        play();
+      });
+
+      stopButton.addEventListener("click", function() {
+        animation.stop();
+      });
+
+      div.appendChild(onceButton);
       div.appendChild(playButton);
+      div.appendChild(stopButton);
       return div;
     }
 
 		withElement(config.prefix + "-canvas", function(container) {
       container.appendChild(createDrawingCanvas());
 			withElement(config.prefix + "-toolbar", function(div) {
-        div.appendChild(createDateDisplay());
         div.appendChild(createSlider());
         div.appendChild(createButtonBar());
       });

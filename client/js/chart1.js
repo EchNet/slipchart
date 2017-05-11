@@ -2,6 +2,12 @@ define([], function() {
 
   var ZERO = 700;
 
+  function zToString(z) {
+    var date = new Date();
+    date.setDate(date.getDate() - (100 - z));
+    return date.toString().split(/ /).slice(0, 4).join(' ');
+  }
+
   function newStepFunction(array) {
     return function(z) {
       var entry = array[Math.floor(Math.max(0, Math.min(array.length - 1, (z/100) * array.length)))];
@@ -22,6 +28,7 @@ define([], function() {
 
 	return {
     prefix: "chart1",
+    zToString: zToString,
     width: 1600,
     height: 1000, 
     left: 100,
@@ -86,7 +93,7 @@ define([], function() {
     metrics: [
       {
         fillStyle: "rgba(0,0,90,0.7)",
-        label: " Web",
+        label: "Web",
         x: 250,
         f: newStepFunction([ 320, 260, 320, 360, 370, 350, 340, 330, 330, 320, 310, 250, 201, 325, 400 ])
       },
